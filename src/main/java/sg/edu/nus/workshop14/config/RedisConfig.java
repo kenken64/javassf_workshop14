@@ -2,6 +2,7 @@ package sg.edu.nus.workshop14.config;
 
 //import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 
 import org.springframework.context.annotation.Bean;
@@ -51,9 +52,9 @@ public class RedisConfig {
                 RedisTemplate<String, Object> template = new RedisTemplate();
                 template.setConnectionFactory(jedisFac);
                 template.setKeySerializer(new StringRedisSerializer()); 
-                
+                RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer(getClass().getClassLoader());
                 template.setValueSerializer(
-                        new JdkSerializationRedisSerializer()
+                        serializer
                 );
                 return template;
         }
