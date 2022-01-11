@@ -1,6 +1,5 @@
 package sg.edu.nus.workshop14.config;
 
-//import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -39,6 +38,9 @@ public class RedisConfig {
         public RedisTemplate<String, Object> redisTemplate(){
                 final RedisStandaloneConfiguration config 
                         = new RedisStandaloneConfiguration();
+                logger.info("redis host port> " + 
+                        redisHost + ' ' + redisPort.get() + ' ' + redisPassword);
+                 
                 config.setHostName(redisHost);
                 config.setPort(redisPort.get());
                 config.setPassword(redisPassword);
@@ -46,13 +48,14 @@ public class RedisConfig {
                 final JedisClientConfiguration jedisClient = JedisClientConfiguration
                                 .builder().build();
                 final JedisConnectionFactory jedisFac = 
-                        new JedisConnectionFactory(config, jedisClient); jedisFac.afterPropertiesSet();
-                logger.info("redis host port> {redisHost} {redisPort}", redisHost, redisPort);
+                        new JedisConnectionFactory(config, jedisClient); 
+                jedisFac.afterPropertiesSet();
                         
-                RedisTemplate<String, Object> template = new RedisTemplate();
+                RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
                 template.setConnectionFactory(jedisFac);
                 template.setKeySerializer(new StringRedisSerializer()); 
-                RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer(getClass().getClassLoader());
+                RedisSerializer<Object> serializer 
+                        = new JdkSerializationRedisSerializer(getClass().getClassLoader());
                 template.setValueSerializer(
                         serializer
                 );

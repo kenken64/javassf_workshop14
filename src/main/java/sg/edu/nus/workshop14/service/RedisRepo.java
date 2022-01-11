@@ -1,11 +1,10 @@
 package sg.edu.nus.workshop14.service;
 
-import java.util.List;
-
 import sg.edu.nus.workshop14.model.Contact;
+import org.springframework.stereotype.Repository;
 
-
-public interface ContactsRepo {
+@Repository
+public interface RedisRepo {
         public void save(final Contact ctc);
         public Contact findById(final String contactId);
 }

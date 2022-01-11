@@ -9,9 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class ContactsRedis implements ContactsRepo{
+public class ContactsRedis implements RedisRepo{
         private static final Logger logger = LoggerFactory.getLogger(ContactsRedis.class);
-    
         @Autowired
         RedisTemplate<String, Object> redisTemplate;
 

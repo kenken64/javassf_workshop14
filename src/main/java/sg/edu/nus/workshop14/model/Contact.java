@@ -13,7 +13,6 @@ public class Contact implements Serializable {
         private String email;
         private int phoneNumber;
         private String id;
-
         public Contact(){
                 this.id = this.generateId(8);
         }

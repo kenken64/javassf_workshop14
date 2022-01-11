@@ -40,10 +40,15 @@ public class AddressbookController {
         return "showContact";
     }
 
+    @GetMapping("/contact") 
+    public String getAllContact(Model model){
+        return "listContact";
+    }
+
     @PostMapping("/contact")
     public String contactSubmit(@ModelAttribute Contact contact, Model model) {
-        logger.info("Name > " + contact.getName());
         logger.info("Email > " + contact.getEmail());
+        logger.info("Name > " + contact.getName());
         logger.info("Phone Number > " + contact.getPhoneNumber());
         Contact persistToRedisCtc = new Contact(
                 contact.getName(),
