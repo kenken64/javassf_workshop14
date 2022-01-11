@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import sg.edu.nus.workshop14.service.ContactsRedis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 
 @Controller
 public class AddressbookController {
@@ -41,7 +43,10 @@ public class AddressbookController {
     }
 
     @GetMapping("/contact") 
-    public String getAllContact(Model model){
+    public String getAllContact(Model model, @RequestParam(name="startIndex") String startIdx){
+        List<Contact> resultFromSvc = service.findAll(Integer.parseInt(startIdx));
+        logger.info("resultFromSvc >> " + resultFromSvc);
+        model.addAttribute("contacts", resultFromSvc);
         return "listContact";
     }
 
