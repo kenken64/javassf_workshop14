@@ -53,12 +53,16 @@ public class RedisConfig {
                         
                 RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
                 template.setConnectionFactory(jedisFac);
-                template.setKeySerializer(new StringRedisSerializer()); 
+                template.setKeySerializer(new StringRedisSerializer());
+                template.setHashKeySerializer(new StringRedisSerializer());
+
                 RedisSerializer<Object> serializer 
                         = new JdkSerializationRedisSerializer(getClass().getClassLoader());
                 template.setValueSerializer(
                         serializer
                 );
+                template.setHashValueSerializer(serializer);
+                
                 return template;
         }
 }

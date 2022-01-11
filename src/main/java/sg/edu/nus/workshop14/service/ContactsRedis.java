@@ -29,7 +29,7 @@ public class ContactsRedis implements RedisRepo{
         public Contact findById(final String contactId){
                 Contact result = (Contact)redisTemplate.opsForHash()
                         .get(CONTACT_ENTITY + "_Map", contactId);
-                logger.info(" >>> " + result.getEmail());
+                logger.info(" >>> " + result);
                 return result;
         }
 
