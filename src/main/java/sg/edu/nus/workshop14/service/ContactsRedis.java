@@ -5,39 +5,25 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import sg.edu.nus.workshop14.model.Contact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class ContactsRedis implements ContactsRepo{
-        //private final String CONTACT_CACHE = "CONTACT";
-
-
+        private static final Logger logger = LoggerFactory.getLogger(ContactsRedis.class);
+    
         @Autowired
-        RedisTemplate<String, String> redisTemplate;
+        RedisTemplate<String, Object> redisTemplate;
 
         @Override
         public void save(final Contact ctc){
-                redisTemplate.opsForValue().set(ctc.getId() + "_email", ctc.getEmail());
-                redisTemplate.opsForValue().set(ctc.getId() + "_name", ctc.getName());
-                redisTemplate.opsForValue().set(ctc.getId() + "_phoneNumber", Integer.toString(ctc.getPhoneNumber()));
+                redisTemplate.opsForValue().set(ctc.getId(), ctc);
         }
 
         @Override
         public Contact findById(final String contactId){
-                String email = redisTemplate.opsForValue().get(contactId + "_email");
-                String name = redisTemplate.opsForValue().get(contactId + "_name");
-                String phoneNumber = redisTemplate.opsForValue().get(contactId + "_phoneNumber");
-                Contact returnCtc  = new Contact(name, email, Integer.parseInt(phoneNumber));
-                return returnCtc;
+                Contact result = (Contact)redisTemplate.opsForValue().get(contactId);
+                logger.info(" >>> " + result.getEmail());
+                return result;
         }
-
-        // @Override
-        // public List<Contact> findAll(){
-        //         return redisTemplate.opsForList().range(CONTACT_CACHE, 0 , -1);
-        // }
-
-        // @Override
-        // public void delete(String id){
-        //         redisTemplate.opsForValue().getAndDelete(id);
-        // }
-
 }
