@@ -35,16 +35,15 @@ public class ContactsRedis implements RedisRepo{
 
         @Override
         public List<Contact> findAll(int startIndex){
-                List<Contact> ctcs = new ArrayList<Contact>();
                 List<Object> fromContactList = redisTemplate.opsForList()
                         .range(CONTACT_ENTITY, startIndex, startIndex + 9);
-                logger.info(" >>> " + fromContactList);
-                for(Object obj: fromContactList){
-                        logger.info("obj > " + obj);
-                        Contact ctcObj = (Contact)redisTemplate.opsForHash()
-                                .get(CONTACT_ENTITY + "_Map", (String)obj);
-                        ctcs.add(ctcObj);
-                }
+                List<Contact> ctcs = 
+                        (List<Contact>)redisTemplate.opsForHash()
+                                .multiGet(CONTACT_ENTITY + "_Map", fromContactList)
+                                .stream()
+                                .filter(Contact.class::isInstance)
+                                .map(Contact.class::cast)
+                                .toList();
                 return ctcs;
         }
 }
