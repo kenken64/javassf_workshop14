@@ -1,5 +1,5 @@
 ## Workshop 14
 
 ```
-./nvmw spring-boot:run
+./mvmw spring-boot:run
 ```
