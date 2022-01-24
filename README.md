@@ -65,9 +65,9 @@ docker run --rm -p 4025:6379 -d --name redis-1 redis redis-server
 How to clean up all the docker images, volume disk space 
 ```
 docker system prune -a
+```
 
 Docker composition
-
 
 ```
 version: '2'
@@ -85,15 +85,23 @@ services:
      - "6379:6379"
 ```
 
+Everytime before rebuild the docker image, is required to clean and package
+
 ```
 ./mvnw clean package
+```
 
+It is possible to rebuild the docker images and start the instance
+```
 docker-compose up -d --build
+```
 
+In order to stop the docker composition instances  run the below command
+```
 docker-compose down
 ```
 
-Select Dockerfile for building
+It is possible to select different  Dockerfile for building the respective images
 
 ```
 docker build -f Dockerfile.2 -t springio/workshop14-spring-boot-docker2 .
@@ -101,8 +109,7 @@ docker build -f Dockerfile.3 -t springio/workshop14-spring-boot-docker3 .
 
 ```
 
-
-Interactive mode into the container
+Interactive mode logged into the container
 ```
 docker exec -it <redis-container-id> sh
 ```
